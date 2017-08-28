@@ -1,5 +1,3 @@
-// anything that has JSX needs to import react
-// the component curly braces means pull the item component off react
 import React, { Component } from 'react';
 
 const axios = require('axios');
@@ -14,14 +12,8 @@ class SearchBar extends Component {
     constructor(props) {
         super(props);
 
-        // if you're using a function within jsx, always bind
         this.printState = this.printState.bind(this);
         this.postInfo = this.postInfo.bind(this);
-
-        // enable the getInfo
-        //this.getInfo = this.getInfo.bind(this);
-
-        // whenever you use state, create a new objecta and assigning it to this.state
         this.state = {
             term: '',
             id: '',
@@ -30,12 +22,9 @@ class SearchBar extends Component {
         };
     }
 
-    // when you define a class component you MUST
-    // have a render method and return some JSX
     render() {
 
         <p>My search criteria is {this.props.search}</p>
-        // onChange is a native function to React
         return (
             <div>
                 <p></p>
@@ -51,25 +40,9 @@ class SearchBar extends Component {
 
         );
     }
-    // inside react component you don't need function
-    printState() {
-        console.log(this.state.term)
-    };
 
-    // getInfo() {
-    //     let html;
-    //     console.log(this.state.term);
-    //     axios.get(this.correctUrl(this.state.term))
-    //         .then(data => {
-    //             console.log(data);
-    //             html = data.data;
-    //             // html = this.correctUrl('html');
-    //             // gets the HTML of the website and returns it
-    //             this.setState({ string: html });
-    //             console.log(html);
-    //         });
-    // };
-
+    // function to grab the HTML with axios.get and pass it into the state
+    // the post passes to my RESTapi in dbtest.js where I run my queries
     postInfo() {
         axios.get(this.correctUrl(this.state.term))
             .then(response => {
@@ -82,8 +55,6 @@ class SearchBar extends Component {
             // passing your url to your express server
             url: this.correctUrl(this.state.term),
             html: this.state.html
-            // test data 
-            // url: 'http://www.test.com'
         })
             .then(response => {
                 console.log(response.data[0].idwebsite);
@@ -92,19 +63,8 @@ class SearchBar extends Component {
             })
     };
 
-    postUrl() {
-        axios.get('')
-            .then(function (response) {
-                console.log(response);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-
-    }
-
-    // this one works
-    // passing a https:// wpn't work so no need to correct URL
+    // function to correct the url from www to http://www
+    // passing a https:// won't work so no need to correct URL
     correctUrl(url) {
         var prefix = 'http://';
         if (url.substr(0, prefix.length) !== prefix) {
@@ -113,19 +73,6 @@ class SearchBar extends Component {
         }
         return url;
     };
-
-    // correctUrl(url) {
-    //     var prefix = 'http://';
-    //     var prefix2 = 'https://';
-    //     if (url.substr(0, prefix2.length) !== prefix2) {
-    //         return url;
-    //     } else if (url.substr(0, prefix.length) !== prefix ) {
-    //         return url;
-    //     } else {
-    //     return url;
-    //     }
-    // };
-
 }
 
 export default SearchBar;

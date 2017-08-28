@@ -32,38 +32,6 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
     extended: true
 }));
 
-
-// app.post('/test', function(req, res) {
-//     console.log('post received');
-//     var name = req.body.url;
-//     console.log(name);
-//     connection.query(findQuery(name), function(error, results, fields) {
-//         if (error) {
-//             console.log('Error in query');
-//         } else {
-//             console.log('Successful query');
-//             console.log(results);
-//             res.send(results);
-//         }
-//     });
-// })
-
-// app.get('/', function(req, res) {
-//     var name = 'website name will be passed here'
-//     var query = `INSERT INTO my_db.website (html, name) VALUES ('${HTML}', '${WEBSITENAME}')`;
-//     connection.query(query, function(error, results, fields) {
-//         if (error) {
-//             // I set it so name is unique in table
-//             // maybe display error to user?
-//             console.log('Duplicate entry');
-//         } else {
-//             console.log('Successful query');
-//             console.log(results);
-//             res.send(results);
-//         }
-//     });
-// })
-
 app.post('/test', function (req, res, next) {
     var name = req.body.url;
     var html = req.body.html;
@@ -75,8 +43,6 @@ app.post('/test', function (req, res, next) {
             console.log('Error');
         } else {
             console.log('Successful query');
-            // var rows = JSON.parse(JSON.stringify(results[0]));
-            console.log('WHATWHATBELOW');
             console.log(results);
             if(results.length === 0) {
                 console.log('NOTHING HERE');
@@ -95,7 +61,5 @@ app.post('/test', function (req, res, next) {
         }
     });
 })
-
-
 
 app.listen(1337);
