@@ -1,39 +1,51 @@
 // anything that has JSX needs to import react
 // the component curly braces means pull the item component off react
 import React, { Component } from 'react';
+
 const axios = require('axios');
 
+var instance = axios.create({
+    baseURL: 'https://localhost:3000',
+    timeout: 1000,
+    headers: { 'Access-Control-Allow-Origin': '*' }
+});
 
 class SearchBar extends Component {
-    // functional components do not have states, only class based components
-    // the constructor is the first and only function called automatically 
     constructor(props) {
         super(props);
 
-        // the function is known to be bound to the searchbar components
         // if you're using a function within jsx, always bind
         this.printState = this.printState.bind(this);
-        this.getInfo = this.getInfo.bind(this);
+        this.postInfo = this.postInfo.bind(this);
+
+        // enable the getInfo
+        //this.getInfo = this.getInfo.bind(this);
 
         // whenever you use state, create a new objecta and assigning it to this.state
-        this.state = { term: '',
-                       id: '' };
+        this.state = {
+            term: '',
+            id: '',
+            string: ''
+        };
     }
+
     // when you define a class component you MUST
     // have a render method and return some JSX
     render() {
 
         <p>My search criteria is {this.props.search}</p>
-        // use curly braces if you're using JS inside JSX
         // onChange is a native function to React
         return (
             <div>
+                <p></p>
                 <input
-                    value={this.state.term}
                     onChange={event => this.setState({ term: event.target.value })} />
-                Value of the input: {this.state.term}
-                <p>THIS IS RESPONDED DATA ID: {this.props.id}</p>
-                <button onClick={this.getInfo}>PRINT</button>
+                <p></p>
+                <button onClick={this.postInfo}>PRINT</button>
+                <p></p>
+                <div className="html-box">
+                    {(this.state.id)}
+                </div>
             </div>
 
         );
@@ -43,21 +55,67 @@ class SearchBar extends Component {
         console.log(this.state.term)
     };
 
-    getInfo() {
-        axios.get('http://localhost:1337', {
-            params: {
-                query: this.state.term
-            }
+    // getInfo() {
+    //     let html;
+    //     console.log(this.state.term);
+    //     axios.get(this.correctUrl(this.state.term))
+    //         .then(data => {
+    //             console.log(data);
+    //             html = data.data;
+    //             // html = this.correctUrl('html');
+    //             // gets the HTML of the website and returns it
+    //             this.setState({ string: html });
+    //             console.log(html);
+    //         });
+    // };
+
+    postInfo() {
+        axios.post('http://localhost:1337/test', {
+            // passing your url to your express server
+            url: this.correctUrl(this.state.term)
+            // test data 
+            // url: 'http://www.test.com'
         })
+            .then(response => {
+                console.log(response.data[0].idwebsite);
+                // this.setState({ id: response.data[0].idwebsite });
+                this.setState({ id: response.data[0].html });
+            })
+    };
+
+    postUrl() {
+        axios.get('')
             .then(function (response) {
-                this.setState({ id: response.data});
-                console.log(response.data);
+                console.log(response);
             })
             .catch(function (error) {
                 console.log(error);
             });
+
+    }
+
+    // this one works
+    // passing a https:// wpn't work so no need to correct URL
+    correctUrl(url) {
+        var prefix = 'http://';
+        if (url.substr(0, prefix.length) !== prefix) {
+            url = prefix + url;
+            return url;
+        }
+        return url;
     };
 
+    // correctUrl(url) {
+    //     var prefix = 'http://';
+    //     var prefix2 = 'https://';
+    //     if (url.substr(0, prefix2.length) !== prefix2) {
+    //         return url;
+    //     } else if (url.substr(0, prefix.length) !== prefix ) {
+    //         return url;
+    //     } else {
+    //     return url;
+    //     }
+    // };
 
 }
 
