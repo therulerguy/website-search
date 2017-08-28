@@ -25,7 +25,8 @@ class SearchBar extends Component {
         this.state = {
             term: '',
             id: '',
-            string: ''
+            string: '',
+            html: ''
         };
     }
 
@@ -70,9 +71,17 @@ class SearchBar extends Component {
     // };
 
     postInfo() {
+        axios.get(this.correctUrl(this.state.term))
+            .then(response => {
+                this.setState({ html: response })
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
         axios.post('http://localhost:1337/test', {
             // passing your url to your express server
-            url: this.correctUrl(this.state.term)
+            url: this.correctUrl(this.state.term),
+            html: this.state.html
             // test data 
             // url: 'http://www.test.com'
         })

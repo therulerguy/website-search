@@ -26,14 +26,16 @@ const axios = require('axios');
 //     })
 // // };
 
-axios.get('http://www.mangapanda.com')
-  .then(function (response) {
-    var html = response;
-    return html;
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
 
-  console.log('HTML BELOWWWWWWW');
-  console.log(html);
+function getHtml(url) {
+        axios.get(url)
+            .then(response => {
+                return response; 
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
+    }
+
+getHtml('http://www.google.com');
+

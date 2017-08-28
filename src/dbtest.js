@@ -66,7 +66,10 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 
 app.post('/test', function (req, res, next) {
     var name = req.body.url;
+    var html = req.body.html;
+    console.log('NAME AND HTML SHOULD BE BELOW');
     console.log(name);
+    console.log(html);
     connection.query(queries.findQuery(name), function (error, results, fields) {
         if (error) {
             console.log('Error');
@@ -75,13 +78,9 @@ app.post('/test', function (req, res, next) {
             // var rows = JSON.parse(JSON.stringify(results[0]));
             console.log('WHATWHATBELOW');
             console.log(results);
-            console.log('below should be undefinied');
-            console.log(results[1]);
-            console.log('should be html');
-            console.log(results['html']);
             if(results.length === 0) {
                 console.log('NOTHING HERE');
-                connection.query(queries.insertQuery('test', name), function (error, results, fields) {
+                connection.query(queries.insertQuery(html, name), function (error, results, fields) {
                     //return id after insert
                     connection.query(queries.findQuery(name), function (error, results, fields) {
                         console.log('RESULTS BELOWS');
